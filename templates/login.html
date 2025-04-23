@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Financial Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            background: linear-gradient(to bottom, #a6e3ff, #000049);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+    display: flex;
+    width: 60%;
+    height: 60%;
+    box-shadow: 0 0 30px rgba(216, 211, 211, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+}
+        .left {
+    width: 50%;
+    padding: 60px 40px 60px 80px;
+    position: relative;
+    overflow: hidden;
+
+    /* 🌫️ Glassmorphism */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    z-index: 2;
+}        
+        .left h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: #fff;
+            align-content: center;
+            font-family: 'Abril Fatface', cursive;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            background-color: #f2f2f2;
+        }
+        .form-group input::placeholder {
+            color: #333;
+            font-weight: bold;
+        }
+        .form-btn {
+    margin-top: 20px;
+    background-color: #000;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00aaff;
+    transition: background 0.3s ease;
+}
+        @keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: 200px 0;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.vertical-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 60px;
+    background: linear-gradient(to bottom, #000d33, #0066ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-lr; /* 👈 flips it so it reads bottom to top */
+    transform: rotate(180deg);
+    color: #fff;
+    font-weight: bold;
+    font-size: 30px;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.4);
+    transition: all 0.3s ease-in-out;
+    font-family: 'Cormorant', serif;
+}
+
+.vertical-bar span {
+    animation: shimmer 2.5s infinite linear, float 1.7s ease-in-out infinite;
+    background: linear-gradient(to right, #ffffff 20%, #cce6ff 40%, #ffffff 60%);
+    background-size: 200px 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Hover effect on bar */
+.right {
+            width: 50%;
+            background: url("/static/images/dashboard.jpg") no-repeat center center/cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="vertical-bar">
+                <span>Welcome To Financial Portfolio</span>
+            </div>
+            <h2>Login</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" name="email" placeholder="email.." required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="password.." required>
+                </div>
+                <button type="submit" class="form-btn">Submit</button>
+            </form>
+        </div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>

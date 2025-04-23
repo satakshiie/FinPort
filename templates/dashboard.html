@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Side Navigation Bar -->
+  <div class="sidebar">
+    <h2 style="text-align: center; color: #c28840e0;   font-family: 'Playfair Display', serif;">FinPort</h2>
+    <div class="sidebar-links">
+      <a href="/dashboard" class="sidebar-item">Dashboard</a>
+      
+      <div class="dropdown">
+        <button class="dropbtn">Performance Metrics</button>
+        <div class="dropdown-content">
+          <a href="/moving_avg">Moving Average</a>
+          <a href="/risk_analysis">Risk Analysis</a>
+          <a href="/daily_returns">Daily Returns</a>
+          <a href="/correlation">Correlation Analysis</a>
+        </div>
+      </div>
+      
+      <a href="#" id="openAssetModal" class="sidebar-item">Add Asset</a>
+      <a href="/settings" class="sidebar-item">Settings</a>
+      <a href="/logout" class="sidebar-item">Logout</a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    
+    <!-- Profile Section -->
+    <div class="profile-container">
+      <label for="imageUpload" class="image-wrapper">
+        <img id="profileImage" src="https://via.placeholder.com/100?text=Upload" alt="User Image">
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+      </label>
+      <div class="welcome-text">
+    
+       <h1 style="color: #c28840e0;   font-family: 'Playfair Display', serif;"> Welcome, {{ user.name or "User" }}</h1>
+      </div>
+    </div>
+
+    <!-- Portfolio Info -->
+    <h3>Your Portfolio</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Portfolio ID</th>
+          <th>Portfolio Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in portfolios %}
+        <tr>
+          <td>{{ p.portfolio_id }}</td>
+          <td>{{ p.portfolio_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Your Investments</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Asset ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Purchase Price</th>
+          <th>Purchase Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in investments %}
+        <tr>
+          <td>{{ inv.asset_id }}</td>
+          <td>{{ inv.name }}</td>
+          <td>{{ inv.asset_type }}</td>
+          <td>{{ inv.quantity }}</td>
+          <td>${{ inv.purchase_price }}</td>
+          <td>{{ inv.purchase_date | datetimeformat('%d-%m-%Y') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Your Transactions</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Transaction Type</th>
+          <th>Asset ID</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+          <th>Transaction Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tx in transactions %}
+        <tr>
+          <td>{{ tx.transaction_type }}</td>
+          <td>{{ tx.asset_id }}</td>
+          <td>{{ tx.name }}</td>
+          <td>{{ tx.quantity }}</td>
+          <td>${{ tx.amount }}</td>
+          <td>{{ tx.transaction_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <!-- Add Asset Modal -->
+    <div id="assetModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeAssetModal">&times;</span>
+        <h2>Add New Asset</h2>
+        <form action="{{ url_for('add_asset') }}" method="POST">
+          <label for="name">Asset Name:</label>
+          <input type="text" name="name" required>
+  
+          <label for="asset_type">Asset Type:</label>
+          <input type="text" name="asset_type" required>
+  
+          <label for="quantity">Quantity:</label>
+          <input type="number" name="quantity" step="0.01" required>
+  
+          <label for="purchase_price">Purchase Price:</label>
+          <input type="number" name="purchase_price" step="0.01" required>
+  
+          <label for="purchase_date">Purchase Date:</label>
+          <input type="date" name="purchase_date" required>
+  
+          <label for="symbol">Symbol:</label>
+          <input type="text" name="symbol" required>
+
+          <label for="risk_value">Risk Value:</label>
+          <input type="number" name="risk_value" step="0.01" required>
+  
+          <button type="submit">Add Asset</button>
+        </form>
+      </div>
+    </div>
+
+    <h3>Market Data</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Asset Name</th>
+          <th>Closing Price</th>
+          <th>Volume</th>
+          <th>Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for asset in assets %}
+        <tr>
+          <td>{{ asset.name }}</td>
+          <td>
+            {% if market_data[asset.asset_id] %}
+                ${{ "%.2f"|format(market_data[asset.asset_id].closing_price) }}
+            {% else %}
+                <span style="color: red;">N/A</span>
+            {% endif %}
+        </td>
+          <td>{{ market_data[asset.asset_id].volume }}</td>
+          <td>
+            {% if market_data[asset.asset_id] %}
+                {{ market_data[asset.asset_id].date }}
+            {% else %}
+                <span style="color: red;">N/A</span>
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button id="refreshMarketData">🔄 Refresh Market Data</button>
+    <p id="updateStatus"></p> <!-- To show success/error messages -->
+  </div>
+
+  <script>
+    const modal = document.getElementById("assetModal");
+    const btn = document.getElementById("openAssetModal");
+    const span = document.getElementById("closeAssetModal");
+
+    btn.onclick = () => modal.style.display = "block";
+    span.onclick = () => modal.style.display = "none";
+    window.onclick = (event) => {
+      if (event.target == modal) modal.style.display = "none";
+    };
+
+    document.getElementById("refreshMarketData").addEventListener("click", function() {
+      fetch('/update_market_data', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("updateStatus").innerText = data.message || data.error;
+        })
+        .catch(error => {
+          document.getElementById("updateStatus").innerText = "Error updating market data!";
+        });
+    });
+
+    const imgInput = document.getElementById("imageUpload");
+const profilePic = document.getElementById("profileImage");
+
+// Load the saved image from localStorage
+window.addEventListener("DOMContentLoaded", () => {
+  const savedImage = localStorage.getItem("profileImage");
+  if (savedImage) {
+    profilePic.src = savedImage;
+  }
+});
+
+// Save the image to localStorage when selected
+imgInput.addEventListener("change", () => {
+  const file = imgInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    profilePic.src = reader.result;
+    localStorage.setItem("profileImage", reader.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// Click on image opens file selector
+profilePic.addEventListener("click", () => imgInput.click());
+  </script>
+</body>
+</html>

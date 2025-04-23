@@ -1,0 +1,231 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    background-color: #d9ebfd;
+  }
+
+  .sidebar {
+    width: 220px;
+    background-color:#001F3F;
+    color: #C28840;
+    height: 100vh;
+    padding-top: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 15px 25px;
+    color:#C28840;
+    text-decoration-style: solid;
+    transition: background 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+  }
+ .dropbtn{
+   margin-left: 10px;
+   font-family: 'Poppins', sans-serif;
+  }
+
+  .sidebar a:hover {
+    background-color: rgba(0, 0, 255, 0.387);
+  }
+
+  .main-content {
+    margin-left: 260px; /* Keep this to leave space for the sidebar */
+    padding: 20px;
+    width: calc(100% - 260px); /* Make sure it takes up the remaining width */
+  }
+  
+  .profile-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 25px;
+    background-color:#001F3F;
+    border-bottom: 1px solid #C28840;
+    max-width: auto;
+    align-items: center;
+  }
+  
+  .image-wrapper img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid #888;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  .welcome-text {
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color:#C28840;
+    justify-content: center;
+  }
+
+  .logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 25px;
+background-color:#fee9d0;
+}
+
+th {
+background-color: #001F3F;
+text-align: left;
+color: #C28840;
+font-family: 'Playfair Display', serif;
+}
+
+th, td {
+padding: 10px;
+border: 1px solid #000000;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 40%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+  }
+    .dropbtn {
+      background-color: #001F3F;
+      color:#C28840;
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color:#c28840e0;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 6px;
+    }
+  
+    .dropdown-content a {
+      color: #001F3F;
+      padding: 12px 16px;
+      text-decoration: solid;
+      display: block;
+    }
+  
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+  
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+   
+    .main-content {
+      display: flex;
+      flex-direction: column; /* ⬅️ Stack children vertically */
+      gap: 20px; /* optional spacing between sections */
+    }
+    x/* Modal Background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+/* Modal Box */
+.modal-content {
+  background-color: #fff;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 20px;
+  width: 450px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Modal Header */
+.modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  color: #c28840e0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form Inputs */
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Submit Button */
+.modal-content button[type="submit"] {
+  background-color: #c28840e0;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: #a97431e0;
+}
+
+/* Close Button */
+.close {
+  color: #888;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: #c28840e0;
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Correlation Analysis</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h2 style="text-align:center;">Asset Correlation Heatmap</h2>
+    <div id="correlationPlot" style="width:90%;margin:auto;"></div>
+    <script>
+        const plotData = JSON.parse('{{ plot_json | tojson | safe }}');
+        Plotly.newPlot('correlationPlot', plotData.data, plotData.layout);
+    </script>
+</body>
+</html>

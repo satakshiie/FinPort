@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Returns</title>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <style>
+        body {
+            background: rgb(0, 0, 0);
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding: 30px;
+        }
+        h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+        select {
+            padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      background: #ffffff;
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s ease
+        }
+
+        #chart {
+            background: #ffffff;
+      border-radius: 12px;
+      padding: 1rem;
+      width: 90%;
+      max-width: 1000px;
+      margin: 2rem auto 0 auto;
+      height: 600px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h2>📈 Daily Returns Visualizer</h2>
+    <select id="tickerSelect">
+        <option value="AAPL">AAPL</option>
+        <option value="TSLA">TSLA</option>
+    </select>
+
+    <div id="chart"></div>
+
+    <script>
+        const dropdown = document.getElementById("tickerSelect");
+        const chart = document.getElementById("chart");
+
+        function loadDailyReturns(ticker) {
+            fetch(`/performance-metrics/dailyReturns/${ticker}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Data not available");
+                    return response.json();
+                })
+                .then(data => {
+                    Plotly.newPlot(chart, data.data, data.layout);
+                })
+                .catch(err => {
+                    chart.innerHTML = `<p style="color:red;">Error loading data for ${ticker}</p>`;
+                    console.error(err);
+                });
+        }
+
+        // Load on page start
+        loadDailyReturns(dropdown.value);
+
+        // Load on ticker change
+        dropdown.addEventListener("change", () => {
+            loadDailyReturns(dropdown.value);
+        });
+    </script>
+</body>
+</html>

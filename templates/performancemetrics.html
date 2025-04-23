@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Metrics</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Performance Metrics</h1>
+    
+    <label for="metricSelector">Select Metric:</label>
+    <select id="metricSelector">
+        <option value="movingAvg">Moving Averages</option>
+        <option value="dailyReturns">Daily Returns</option>
+        <option value="correlation">Correlation Analysis</option>
+        <option value="risk">Risk Analysis</option>
+    </select>
+
+    <div id="plotly-chart"></div>
+
+    <script>
+        const ticker = "AAPL"; // Default ticker. You can make this dynamic too.
+
+        function fetchPlot(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    Plotly.react("plotly-chart", data.data, data.layout);
+                })
+                .catch(error => {
+                    console.error("Error fetching plot:", error);
+                });
+        }
+
+        function handleMetricChange(metric) {
+            switch (metric) {
+                case "movingAvg":
+                    fetchPlot(`/moving-averages/${ticker}`);
+                    break;
+                case "dailyReturns":
+                    fetchPlot(`/daily-returns/${ticker}`);
+                    break;
+                case "correlation":
+                    fetchPlot(`/correlation`);
+                    break;
+                case "risk":
+                    fetchPlot(`/risk-analysis/${ticker}`);
+                    break;
+                default:
+                    console.warn("Unknown metric selected");
+            }
+        }
+
+        document.getElementById("metricSelector").addEventListener("change", function () {
+            handleMetricChange(this.value);
+        });
+
+        // Load default chart (Moving Averages)
+        handleMetricChange("movingAvg");
+    </script>
+</body>
+</html>
