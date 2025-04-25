@@ -6,9 +6,9 @@
     <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
     <style>
         body {
-            background: rgb(0, 0, 0);
-            color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
+            background: rgb(12, 12, 86);
+            color:  #c28840e0;
+            font-family: 'Playfair Display', serif;
             text-align: center;
             padding: 30px;
         }
@@ -18,32 +18,104 @@
       letter-spacing: 1px;
     }
 
+    .info-icon {
+      background-color: #c28840e0;
+      color: #222;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .tooltip {
+      display: none;
+      position: absolute;
+      top: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      background-color: #fefefe;
+      color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      font-size: 0.9rem;
+      text-align: left;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .info-container:hover .tooltip {
+    display: block;
+    opacity: 1;
+}
+
+    .info-container {
+      position: relative;
+      display: inline-block;
+      padding-right: 20px;
+    }
+
+    .info-container:hover .tooltip {
+      display: block;
+    }
         select {
             padding: 10px 15px;
       border-radius: 8px;
       font-size: 1rem;
       border: none;
       outline: none;
-      background: #ffffff;
+      background:  #c28840e0;
       color: #333;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       transition: all 0.2s ease
         }
 
         #chart {
-            background: #ffffff;
-      border-radius: 12px;
-      padding: 1rem;
-      width: 90%;
-      max-width: 1000px;
-      margin: 2rem auto 0 auto;
-      height: 600px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
+    background: #c28840b3;
+    border-radius: 13px;
+    padding: 1rem;
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto 0 auto;
+    height: 600px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    
+    /* fade in animation */
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards;
+}
+
+/* Fade in keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     </style>
 </head>
 <body>
-    <h2>📈 Daily Returns Visualizer</h2>
+    <h2>Daily Returns Visualizer</h2>
+    <span class="info-container">
+        <span class="info-icon">i</span>
+        <div class="tooltip">
+          <strong>What are Daily Returns?</strong><br /><br />
+          Daily returns represent the percentage change in a stock's closing price from one day to the next. 
+          They help investors analyze volatility and spot patterns in performance. Spikes often signify significant 
+          market events or earnings announcements.
+        </div>
+      </span>
     <select id="tickerSelect">
         <option value="AAPL">AAPL</option>
         <option value="TSLA">TSLA</option>

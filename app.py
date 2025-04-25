@@ -316,7 +316,7 @@ def daily_returns_api(data,ticker):
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=df.index, y=df["Daily Returns"], mode='lines', name="Daily Returns",
-            line=dict(color="purple")
+            line=dict(color='rgba(194, 136, 64, 0.88)', width=3),
         ))
 
         fig.update_layout(

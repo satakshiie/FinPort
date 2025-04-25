@@ -1,44 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Risk Analysis</title>
-    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <meta charset="UTF-8" />
+  <title>Risk Analysis</title>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <style>
+    body {
+      background: rgb(12, 12, 86);
+      color: #c28840e0;
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .info-icon {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .info-icon:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-10px);
+      
+    }
+    .info-container {
+      position: relative;
+      display: inline-block;
+      padding-left: 10px;
+    }
+
+
+    .tooltip {
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      width: 220px;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    input[type="text"] {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      background: #f5f5f5;
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      width: 200px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #c28840e0;
+      color: #222;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #e5a24ae0;
+    }
+
+    #riskPlot {
+      background: rgba(194, 136, 64, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 13px;
+      padding: 1rem;
+      width: 90%;
+      max-width: 1000px;
+      margin: 2rem auto 0 auto;
+      height: 600px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h2 style="text-align:center;">Risk Analysis of Portfolio</h2>
+  <h2>Risk Analysis of Portfolio</h2>
+  <div style="margin-bottom: 20px;">
+    <label for="tickerInput">Enter Ticker Symbol:</label>
+    <input type="text" id="tickerInput" placeholder="e.g., AAPL" />
+    <button onclick="fetchRiskData()">Analyze</button>
+    <span class="info-container">
+    <div class="info-icon">i
+        <div class="tooltip">
+          This chart helps you understand the volatility and risk associated with your selected stock. A higher risk may indicate greater potential reward or loss.
+        </div>
+      </div>
+    </span>
+  </div>
 
-    <div style="text-align:center; margin-bottom: 20px;">
-        <label for="tickerInput">Enter Ticker Symbol:</label>
-        <input type="text" id="tickerInput" placeholder="e.g., AAPL">
-        <button onclick="fetchRiskData()">Analyze</button>
-    </div>
+  <div id="riskPlot"></div>
 
-    <div id="riskPlot" style="width:90%; margin:auto;"></div>
+  <script>
+    function fetchRiskData() {
+      const ticker = document.getElementById("tickerInput").value.trim().toUpperCase();
+      if (!ticker) {
+        alert("Please enter a ticker symbol.");
+        return;
+      }
 
-    <script>
-        function fetchRiskData() {
-            const ticker = document.getElementById("tickerInput").value.trim().toUpperCase();
-            if (!ticker) {
-                alert("Please enter a ticker symbol.");
-                return;
-            }
-
-            fetch(`/performance-metrics/risk/${ticker}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ticker not found or server error.");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    Plotly.newPlot("riskPlot", data.data, data.layout);
-                })
-                .catch(error => {
-                    console.error("Error fetching risk data:", error);
-                    alert("Failed to fetch risk analysis. Please try another ticker.");
-                });
-        }
-    </script>
+      fetch(`/performance-metrics/risk/${ticker}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Ticker not found or server error.");
+          }
+          return response.json();
+        })
+        .then(data => {
+          Plotly.newPlot("riskPlot", data.data, data.layout);
+        })
+        .catch(error => {
+          console.error("Error fetching risk data:", error);
+          alert("Failed to fetch risk analysis. Please try another ticker.");
+        });
+    }
+  </script>
 </body>
 </html>
