@@ -2,15 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Correlation Analysis</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js""></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #001F3F;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #correlationPlot {
+            height: 700px;
+            margin-top: 20px;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h2 style="text-align:center;">Asset Correlation Heatmap</h2>
-    <div id="correlationPlot" style="width:90%;margin:auto;"></div>
+    <div class="container">
+        <h2>Asset Correlation Heatmap</h2>
+        <div class="info">
+            <p>This heatmap shows the correlation between different assets in your portfolio. Values range from -1 (perfect negative correlation) to +1 (perfect positive correlation).</p>
+        </div>
+        <div id="correlationPlot"></div>
+    </div>
+
     <script>
-        const plotData = JSON.parse('{{ plot_json | tojson | safe }}');
-        Plotly.newPlot('correlationPlot', plotData.data, plotData.layout);
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/performance-metrics/correlation')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // This parses the JSON
+                })
+                .then(data => {
+                    // Check if the response contains an error
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    
+                    // Plot the data
+                    Plotly.newPlot('correlationPlot', data.data, data.layout);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('correlationPlot').innerHTML = 
+                        '<p style="color:red;text-align:center;">Error loading correlation data: ' + 
+                        error.message + '</p>';
+                });
+        });
     </script>
 </body>
 </html>

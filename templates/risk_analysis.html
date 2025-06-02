@@ -145,7 +145,7 @@
         return;
       }
 
-      fetch(`/performance-metrics/risk/${ticker}`)
+      fetch('/performance-metrics/riskAnalysis/AAPL')
         .then(response => {
           if (!response.ok) {
             throw new Error("Ticker not found or server error.");
